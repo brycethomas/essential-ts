@@ -3,4 +3,8 @@ function printMessage(msg: string): void {
 }
 
 printMessage("Hello, Typescript");
+
+// tslint:disable-next-line no-debugger
+debugger;
+
 printMessage("It is sunny today");
