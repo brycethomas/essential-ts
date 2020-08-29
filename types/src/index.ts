@@ -6,6 +6,10 @@ function writePrice(product: string, price: number): void {
     console.log(`Price for ${product}: ${price.toFixed(2)}`);
 }
 
+function calculatePrice(quantity: 1 | 2, price: number): number {
+    return quantity * price;
+}
+
 let hatPrice = 100;
 let glovesPrice = 75;
 let umbrellaPrice = 42;
@@ -64,5 +68,53 @@ products.forEach((prod: [Product, number]) => {
     }
 });
 
-enum City { London = "London", Paris = "Paris", NY = "New York" }
-console.log(`City: ${City.London}`);
+// enum City { London = "London", Paris = "Paris", NY = "New York" }
+// console.log(`City: ${City.London}`);
+
+let restrictedValue: 1 | 2 | 3 = 1;
+let secondValue: 1 | 10 | 100 = 1;
+
+restrictedValue = secondValue;
+secondValue = 100;
+// restrictedValue = secondValue;
+
+console.log(`Value: ${restrictedValue}`);
+
+let total = calculatePrice(2, 19.99);
+console.log(`Price: ${total}`);
+
+function getRandomValue(): 1 | 2 | 3 | 4 {
+    return Math.floor(Math.random() * 4) + 1 as 1 | 2 | 3 | 4;
+}
+
+enum City { London = "LON", Paris = "PAR", Chicago = "CHI" }
+
+type comboType = [string, number | true, 1 | 2 | 3 | City.London][];
+
+function getValue(input: comboType): comboType {
+    return [["Apples", 100, 2], ["Oranges", true, 3]];
+}
+
+let result: comboType = getValue([["Bananas", true, 1]]);
+console.log(`Result: ${result}`);
+
+function getMixedValue(input: 1): 1;
+function getMixedValue(input: 2 | 3): "Hello" | true;
+function getMixedValue(input: 4): City.London;
+function getMixedValue(): 1 | "Hello" | true | City.London {
+    switch (getRandomValue()) {
+        case 1:
+            return 1;
+        case 2:
+            return "Hello";
+        case 3:
+            return true;
+        case 4:
+            return City.London;
+    }
+}
+
+let first = getMixedValue(1);
+let second = getMixedValue(2);
+let third = getMixedValue(4);
+console.log(`${first}, ${second}, ${third}`);
