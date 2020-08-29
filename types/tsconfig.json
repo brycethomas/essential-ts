@@ -5,6 +5,7 @@
         "rootDir": "./src",
         "declaration": true,
         "strictNullChecks": true,
+        "suppressExcessPropertyErrors": true,
         // "noImplicitReturns": true
     }
 }
