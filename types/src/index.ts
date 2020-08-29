@@ -1,30 +1,68 @@
-function calculateTax(amount: number): number;
-function calculateTax(amount: null): null;
+function calculateTax(amount: number): number {
+    return amount * 1.2;
+}
 
-function calculateTax(amount: number | null): number | null {
-    if (amount != null) {
-        return amount * 1.2;
+function writePrice(product: string, price: number): void {
+    console.log(`Price for ${product}: ${price.toFixed(2)}`);
+}
+
+let hatPrice = 100;
+let glovesPrice = 75;
+let umbrellaPrice = 42;
+
+let prices: number[] = [100, 75, 42];
+let names: string[] = ["Hat", "Gloves", "Umbrella"];
+
+writePrice("Hat", calculateTax(hatPrice));
+writePrice("Gloves", calculateTax(glovesPrice));
+writePrice("Umbrella", calculateTax(umbrellaPrice));
+
+writePrice(names[0], calculateTax(prices[0]));
+writePrice(names[1], calculateTax(prices[1]));
+writePrice(names[2], calculateTax(prices[2]));
+
+prices.forEach((price: number, index: number) => {
+    writePrice(names[index], calculateTax(price));
+});
+
+
+let hat: [string, number] = ["Hat", 100];
+let gloves: [string, number] = ["Gloves", 75];
+
+writePrice(hat[0], hat[1]);
+writePrice(gloves[0], gloves[1]);
+
+hat.forEach((h: string | number) => {
+    if (typeof h === "string") {
+        console.log(`String: ${h}`);
+    } else {
+        console.log(`Number: ${h.toFixed(2)}`);
     }
-    return null;
-}
+});
 
-function writeValue(label: string, value: number): void {
-    console.log(`${label}: ${value}`);
-}
+enum Product { Hat, Gloves, Umbrella }
 
-// writeValue("Tax value", calculateTax(100, 0));
+[Product.Hat, Product.Gloves, Product.Umbrella].forEach(val => {
+    console.log(`Number value: ${val}`);
+});
 
-// let taxValue = calculateTax(100, 0);
-// console.log(`2 args: ${taxValue}`);
+console.log('==============');
 
-// taxValue = calculateTax(100);
-// console.log(`1 arg: ${taxValue}`);
+let products: [Product, number][] = [[Product.Hat, 100], [Product.Gloves, 75]];
 
-// taxValue = calculateTax(100, 10, 20);
-// console.log(`3 args: ${taxValue}`);
+products.forEach((prod: [Product, number]) => {
+    switch (prod[0]) {
+        case Product.Hat:
+            writePrice("Hat", calculateTax(prod[1]));
+            break;
+        case Product.Gloves:
+            writePrice("Gloves", calculateTax(prod[1]));
+            break;
+        case Product.Umbrella:
+            writePrice("Umbrella", calculateTax(prod[1]));
+            break;
+    }
+});
 
-// taxValue = calculateTax(100, 10, 20, 1, 30, 7);
-// console.log(`6 args: ${taxValue}`);
-
-// let tvNull = calculateTax(null, 0);
-// console.log(`tvNull: ${tvNull}`);
+enum City { London = "London", Paris = "Paris", NY = "New York" }
+console.log(`City: ${City.London}`);

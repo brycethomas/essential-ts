@@ -5,6 +5,6 @@
         "rootDir": "./src",
         "declaration": true,
         "strictNullChecks": true,
-        "noImplicitReturns": true
+        // "noImplicitReturns": true
     }
 }
