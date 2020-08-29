@@ -1,28 +1,30 @@
-let myVar;
-console.log(`${myVar} = ${typeof myVar}`);
-myVar = 12;
-console.log(`${myVar} = ${typeof myVar}`);
-myVar = "Hello";
-console.log(`${myVar} = ${typeof myVar}`);
-myVar = true;
-console.log(`${myVar} = ${typeof myVar}`);
+function calculateTax(amount: number): number;
+function calculateTax(amount: null): null;
 
-function calculateTax(amount: number, format: boolean): string | number {
-    const calcAmount = amount * 1.2;
-    return format ? `$${calcAmount.toFixed(2)}` : calcAmount;
+function calculateTax(amount: number | null): number | null {
+    if (amount != null) {
+        return amount * 1.2;
+    }
+    return null;
 }
 
-let price: number = 100;
-let taxAmount: string | number = calculateTax(price, false);
-let taxString: string | number = calculateTax(price, true);
-// console.log(`Number Value: ${taxAmount.toFixed(2)}`);
-// console.log(`String Value: ${taxString.charAt(0)}`);
+function writeValue(label: string, value: number): void {
+    console.log(`${label}: ${value}`);
+}
 
-// let halfShare: string | number = taxAmount / 2;
+// writeValue("Tax value", calculateTax(100, 0));
 
-// console.log(`Full amount in tax: ${taxAmount}`);
-// console.log(`Half share: ${halfShare}`);
+// let taxValue = calculateTax(100, 0);
+// console.log(`2 args: ${taxValue}`);
 
-// console.log(`${12} = ${calculateTax(12)}.`);
-// console.log(`${"Hello"} = ${calculateTax("Hello")}`);
-// console.log(`${true} = ${calculateTax(true)}`);
+// taxValue = calculateTax(100);
+// console.log(`1 arg: ${taxValue}`);
+
+// taxValue = calculateTax(100, 10, 20);
+// console.log(`3 args: ${taxValue}`);
+
+// taxValue = calculateTax(100, 10, 20, 1, 30, 7);
+// console.log(`6 args: ${taxValue}`);
+
+// let tvNull = calculateTax(null, 0);
+// console.log(`tvNull: ${tvNull}`);
