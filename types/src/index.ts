@@ -1,74 +1,70 @@
-enum Feature { Waterproof, Insulated }
+abstract class Person {
+    constructor(public id: string, public name: string,
+        public city: string) { }
 
-type Product = {
-    id: number
-    name: string,
-    price?: number
-};
+    getDetails(): string {
+        return `${this.name}, ${this.getSpecificDetails()}`;
+    }
 
-type Person = {
-    id: string,
-    name: string,
-    city: string
-};
-
-type Employee = {
-    id: string,
-    company: string,
-    dept: string
+    abstract getSpecificDetails(): string;
 }
 
-type UnionType = {
-    id: number | string,
-    name: string
-};
+class Employee extends Person {
+    constructor(public readonly id: string, public name: string,
+        public dept: string, public city: string) {
+        // No statements required for plain old assignments
+        super(id, name, city);
+    }
 
-type EmployedPerson = Person & Employee;
+    writeDept() {
+        console.log(`${this.name} works in ${this.dept}`);
+    }
 
-function correlateData(peopleData: Person[], staff: Employee[]): EmployedPerson[] {
-    const defaults = { company: "None", dept: "None" };
-    return peopleData.map(p => ({
-        ...p,
-        ...staff.find(e => e.id === p.id) || { ...defaults, id: p.id }
-    }));
+    getSpecificDetails() {
+        return `works in ${this.dept}`;
+    }
 }
 
-let people: Person[] =
-    [{ id: "bsmith", name: "Bob Smith", city: "London" },
-    { id: "ajones", name: "Alice Jones", city: "Paris" },
-    { id: "dpeters", name: "Dora Peters", city: "New York" }];
-let employees: Employee[] =
-    [{ id: "bsmith", company: "Acme Co", dept: "Sales" },
-    { id: "dpeters", company: "Acme Co", dept: "Development" }];
-let dataItems: EmployedPerson[] = correlateData(people, employees);
+class Customer extends Person {
+    constructor(public readonly id: string, public name: string,
+        public city: string, public creditLimit: number) {
+        super(id, name, city);
+    }
 
-// function correlateData(peopleData: Person[], staff: Employee[]):
-//     EmployeePerson[] {
-//     const defaults = { company: "None", dept: "None" };
-//     return peopleData.map(p => ({
-//         ...p,
-//         ...staff.find(e => e.id === p.id) || {
-//             ...defaults, id: p.id
-//         }
-//     }));
-// }
+    getSpecificDetails() {
+        return `has ${this.creditLimit} limit`;
+    }
+}
 
-let hat = { id: 1, name: "Hat", price: 100 };
-let gloves = { id: 2, name: "Gloves", price: 75 };
-let umbrella = { id: 3, name: "Umbrella", price: 30 };
+class Supplier extends Person {
+    constructor(public readonly id: string, public name: string,
+        public city: string, public companyName: string) {
+        super(id, name, city);
+    }
 
-let bob = {
-    id: "bsmith", name: "Bob", city: "London",
-    company: "Acme Co", dept: "Sales"
-};
+    getSpecificDetails() {
+        return `works for ${this.companyName}`;
+    }
+}
 
-// let dataItems: (Person & Employee)[] = [bob];
+let salesEmployee = new Employee("fvega", "Fidel Vega", "Sales", "Paris");
+console.log(`Dept value: ${salesEmployee.dept}`);
+// salesEmployee.id = "fidel";
 
-dataItems.forEach(item => {
-    console.log(`Person: ${item.id}, ${item.name}, ${item.city}`);
-    console.log(`Employee: ${item.id}, ${item.company}, ${item.dept}`);
+let data: Person[] = [new Employee("fvega", "Fidel Vega", "Sales", "Paris"),
+new Customer("ajones", "Alice Jones", "London", 500)];
+
+data.push(new Supplier("dpeters", "Dora Peters", "New York", "Acme"));
+
+data.forEach(item => {
+    console.log(`Person: ${item.name}, ${item.city}`);
+    if (item instanceof Employee) {
+        item.writeDept();
+    } else if (item instanceof Customer) {
+        console.log(`Customer ${item.name} has ${item.creditLimit} limit`);
+    } else if (item instanceof Supplier) {
+        console.log(`Supplier ${item.name} works for ${item.companyName}`);
+    }
 });
 
-function isPerson(testObj: any): testObj is Person {
-    return testObj.city !== undefined;
-}
+data.forEach(item => console.log(item.getDetails()));
