@@ -1,44 +1,41 @@
-import { City, Person, Product } from "./dataTypes";
-
-let people = [new Person("Bob Smith", "London"),
-new Person("Dora Peters", "New York")];
+import { City, Person, Product, Employee } from "./dataTypes";
 
 let products = [new Product("Running Shoes", 100),
 new Product("Hat", 25)];
 
-let cities = [new City("London", 81360000),
-new City("Paris", 2141000)];
+type shapeType = { name: string };
 
-class DataCollection<T extends { name: string }> {
-    private items: T[] = [];
+class Collection<T extends shapeType> {
+    private items: Map<string, T>;
 
-    constructor(initialItems: T[]) {
-        this.items.push(...initialItems);
+    constructor(initialItems: T[] = []) {
+        this.items = new Map<string, T>();
+        this.add(...initialItems);
     }
 
-    add(newItem: T) {
-        this.items.push(newItem);
+    add(...newItems: T[]): void {
+        newItems.forEach(newItem => this.items.set(newItem.name, newItem));
     }
 
-    getNames(): string[] {
-        return this.items.map(item => item.name);
+    get(name: string): T {
+        return this.items.get(name);
     }
 
-    getItem(index: number): T {
-        return this.items[index];
+    get count(): number {
+        return this.items.size;
     }
+
+    [Symbol.iterator](): Iterator<T> {
+        return this.items.values();
+    }
+
+
 }
 
-let peopleData = new DataCollection<Person>(people);
-// console.log(`Names: ${peopleData.getNames().join(", ")}`);
-let firstPerson = peopleData.getItem(0);
-console.log(`First Person: ${firstPerson.name}, ${firstPerson.city}`);
-console.log(`Person Names: ${peopleData.getNames().join(", ")}`);
+let productCollection: Collection<Product> = new Collection(products);
+console.log(`There are ${productCollection.count} products`);
+let p = productCollection.get("Hat");
+console.log(`Product: ${p.name}, ${p.price}`);
 
-let productData = new DataCollection<Product>(products);
-let firstProduct = productData.getItem(0);
-console.log(`First Product: ${firstProduct.name}, ${firstProduct.price}`);
-console.log(`Product Names: ${productData.getNames().join(", ")}`);
-
-let cityData = new DataCollection<City>(cities);
-console.log(`City Names: ${cityData.getNames().join(", ")}`);
+[...productCollection].forEach(p =>
+    console.log(`Product: ${p.name}, ${p.price}`));
