@@ -39,3 +39,15 @@ console.log(`Product: ${p.name}, ${p.price}`);
 
 [...productCollection].forEach(p =>
     console.log(`Product: ${p.name}, ${p.price}`));
+
+function getValue<T, K extends keyof T>(item: T, keyname: K) {
+    console.log(`Value: ${item[keyname]}`);
+}
+
+let P = new Product("Running Shoes", 100);
+getValue(P, "name");
+getValue(P, "price");
+
+let e = new Employee("Bob Smith", "Sales");
+getValue(e, "name");
+getValue(e, "role");
