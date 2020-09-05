@@ -4,11 +4,12 @@
         "outDir": "./dist",
         "rootDir": "./src",
         "module": "commonjs",
-        "allowJs": true,
-        "checkJs": true,
+        // "allowJs": true,
+        // "checkJs": true,
         // "baseUrl": ".",
         // "paths": {
         //     "*": ["types/*"]
         // }
+        "declaration": true
     }
 }
